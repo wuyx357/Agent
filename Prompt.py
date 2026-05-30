@@ -339,10 +339,10 @@ def search_knowledge(query, top_k=1):
 
 
 def send_email(to, subject, body):
-    print(f"\n📧 模拟发送邮件:")
-    print(f"   收件人: {to}")
-    print(f"   主题: {subject}")
-    print(f"   正文: {body[:100]}...")
+    print(f"\n模拟发送邮件:")
+    print(f"收件人: {to}")
+    print(f"主题: {subject}")
+    print(f"正文: {body[:100]}...")
     return f"邮件已发送至 {to}"
 
 
@@ -385,7 +385,7 @@ def chunk_text(text, chunk_size=CHUNK_SIZE):
 
 def build_knowledge_base():
     global index, documents_store
-    print("📚 正在构建知识库...")
+    print("正在构建知识库...")
     documents = load_documents()
 
     all_chunks = []
@@ -394,10 +394,10 @@ def build_knowledge_base():
         all_chunks.extend(chunks)
 
     if len(all_chunks) == 0:
-        print("⚠️ 没有找到知识库文档")
+        print("没有找到知识库文档")
         return
 
-    print(f"📄 共 {len(all_chunks)} 个文本块，正在生成向量...")
+    print(f"共 {len(all_chunks)} 个文本块，正在生成向量...")
 
     BATCH_SIZE = 100
     all_embeddings = []
@@ -406,7 +406,7 @@ def build_knowledge_base():
         batch = all_chunks[i:i + BATCH_SIZE]
         embeddings = embedder.encode(batch)
         all_embeddings.extend(embeddings)
-        print(f"   已处理 {min(i + BATCH_SIZE, len(all_chunks))}/{len(all_chunks)}")
+        print(f"已处理 {min(i + BATCH_SIZE, len(all_chunks))}/{len(all_chunks)}")
 
     embeddings_array = np.array(all_embeddings).astype('float32')
 
@@ -414,7 +414,7 @@ def build_knowledge_base():
     index.add(embeddings_array)
     documents_store = all_chunks
 
-    print(f"✅ 知识库构建完成，共 {len(all_chunks)} 个文本块")
+    print(f"知识库构建完成，共 {len(all_chunks)} 个文本块")
 
 
 def retrieve(query, top_k=3):
@@ -480,19 +480,19 @@ def chat_with_tools_enhanced():
     prompt_builder = PromptBuilder()
 
     print("\n" + "=" * 60)
-    print("🤖 智能助手已启动（输入 'exit' 退出）")
-    print("📌 支持功能：查时间、数学计算、知识库搜索、发邮件")
+    print("智能助手已启动（输入 'exit' 退出）")
+    print("支持功能：查时间、数学计算、知识库搜索、发邮件")
     print("")
-    print("📌 格式切换命令：")
-    print("   /format normal     - 普通模式")
-    print("   /format structured - 结构化输出（JSON）")
-    print("   /format cot        - 思维链模式")
+    print("格式切换命令：")
+    print("/format normal     - 普通模式")
+    print("/format structured - 结构化输出（JSON）")
+    print("/format cot        - 思维链模式")
     print("=" * 60 + "\n")
 
     while True:
         user_input = input("[用户]: ").strip()
         if user_input.lower() == "exit":
-            print("👋 再见！")
+            print("再见！")
             break
 
         # 处理格式切换命令
@@ -500,15 +500,15 @@ def chat_with_tools_enhanced():
             cmd = user_input.split()[1] if len(user_input.split()) > 1 else ""
             if cmd == "structured":
                 current_format = OutputFormat.STRUCTURED
-                print(f"✅ 已切换到【结构化输出】模式\n")
+                print(f"已切换到【结构化输出】模式\n")
             elif cmd == "cot":
                 current_format = OutputFormat.CHAIN_OF_THOUGHT
-                print(f"✅ 已切换到【思维链】模式\n")
+                print(f"已切换到【思维链】模式\n")
             elif cmd == "normal":
                 current_format = OutputFormat.NORMAL
-                print(f"✅ 已切换到【普通】模式\n")
+                print(f"已切换到【普通】模式\n")
             else:
-                print(f"❌ 未知格式: {cmd}，可用: normal, structured, cot\n")
+                print(f"未知格式: {cmd}，可用: normal, structured, cot\n")
             continue
 
         messages.append({"role": "user", "content": user_input})
@@ -531,7 +531,7 @@ def chat_with_tools_enhanced():
                 function_name = tool_call.function.name
                 arguments = json.loads(tool_call.function.arguments)
 
-                print(f"🔧 [调用工具]: {function_name}({arguments})")
+                print(f"[调用工具]: {function_name}({arguments})")
 
                 handler = TOOL_HANDLERS.get(function_name)
                 if handler:
@@ -539,7 +539,7 @@ def chat_with_tools_enhanced():
                 else:
                     result = f"错误：未知工具 {function_name}"
 
-                print(f"📤 [工具返回]: {result[:200]}...")
+                print(f"[工具返回]: {result[:200]}...")
 
                 messages.append({
                     "role": "tool",
