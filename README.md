@@ -4,3 +4,6 @@
 1、文档问答
 2、工具调用（计算器等）
 3、结构化输出
+
+技术:
+Python / FAISS / text2vec / DeepSeek API
